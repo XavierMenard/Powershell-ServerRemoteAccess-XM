@@ -1,18 +1,18 @@
 #ServerRemoteAccess.ps1
-# Script pour se connecter à un serveur local depuis un PC
+# Script pour se connecter Ã  un serveur local depuis un PC
 
-# --- Configuration à modifier avant l'exécution ---
-$serverName = "NomDuServeur"  # Nom du serveur local, à remplacer par le nom réel du serveur
-$userName = "NomUtilisateur"  # Nom d'utilisateur pour la connexion, à remplacer
+# --- Configuration Ã  modifier avant l'exÃ©cution ---
+$serverName = "NomDuServeur"  # Nom du serveur local, Ã  remplacer par le nom rÃ©el du serveur
+$userName = "NomUtilisateur"  # Nom d'utilisateur pour la connexion, Ã  remplacer
 $passwordPrompt = "Veuillez entrer votre mot de passe pour la connexion au serveur"  # Texte du prompt pour entrer le mot de passe
 
 # --- Fin de la configuration ---
 
 $OutputEncoding = New-Object -typename System.Text.UTF8Encoding  # Forcer l'encodage UTF-8
 
-Add-Type -AssemblyName "System.Windows.Forms"  # Permet l'utilisation des boîtes de dialogue
+Add-Type -AssemblyName "System.Windows.Forms"  # Permet l'utilisation des boÃ®tes de dialogue
 
-# Fonction pour créer un dégradé de couleur
+# Fonction pour crÃ©er un dÃ©gradÃ© de couleur
 function Write-ColorGradient {
     param (
         [string]$text
@@ -42,22 +42,22 @@ $asciiArt = @"
                                                           
 "@
 
-# Appliquer un dégradé couleur pour chaque ligne de l'ASCII Art
+# Esthetique Seulement
 $asciiArt.Split("`n") | ForEach-Object { Write-ColorGradient $_ }
 
-# Demander à l'utilisateur de fournir le mot de passe
-$password = Read-Host $passwordPrompt -AsSecureString  # Mot de passe sécurisé
+# Demander Ã  l'utilisateur de fournir le mot de passe
+$password = Read-Host $passwordPrompt -AsSecureString  # Mot de passe sÃ©curisÃ©
 
-# Créer une session de connexion au serveur
+# CrÃ©er une session de connexion au serveur
 $credential = New-Object System.Management.Automation.PSCredential($userName, $password)
 
 # Tentative de connexion
 try {
-    # Essayer de créer la session
+    # Essayer de crÃ©er la session
     $session = New-PSSession -ComputerName $serverName -Credential $credential -ErrorAction Stop
-    Write-Host "Connexion réussie à $serverName !"
+    Write-Host "Connexion rÃ©ussie Ã  $serverName !"
 
-    # Exécuter une commande test sur le serveur
+    # ExÃ©cuter une commande test sur le serveur
     Invoke-Command -Session $session -ScriptBlock {
         Get-Process
     }
@@ -65,8 +65,8 @@ try {
     # Fermer la session
     Remove-PSSession -Session $session
 } catch {
-    # Gérer l'erreur si la connexion échoue
-    $errorMessage = "Erreur de connexion à $serverName : $($_.Exception.Message)"
+    # GÃ©rer l'erreur si la connexion Ã©choue
+    $errorMessage = "Erreur de connexion Ã  $serverName : $($_.Exception.Message)"
     Write-Host $errorMessage
     [System.Windows.Forms.MessageBox]::Show($errorMessage, "Erreur de connexion", [System.Windows.Forms.MessageBoxButtons]::OK, [System.Windows.Forms.MessageBoxIcon]::Error)
 }
